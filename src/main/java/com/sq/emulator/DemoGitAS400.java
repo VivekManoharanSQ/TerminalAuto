@@ -10,6 +10,8 @@ import org.tn5250j.framework.tn5250.ScreenField;
 import org.tn5250j.keyboard.KeyMnemonic;
 import org.tn5250j.tools.LangTool;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -18,6 +20,10 @@ import java.util.stream.IntStream;
 public class DemoGitAS400 {
 
     public static void main(String[] args) throws IOException, InterruptedException {
+
+        JFrame frame = new JFrame("AS400 5250 Emulator");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
         Properties pros = new Properties();
         pros.put(TN5250jConstants.SESSION_TERM_NAME,"DemoVivek");
         pros.put(TN5250jConstants.SESSION_HOST,"pub400.com");
@@ -31,11 +37,16 @@ public class DemoGitAS400 {
         session5250.connect();
         LangTool.init();
         SessionPanel panel = new SessionPanel(session5250);
+
+        panel.setSession(session5250);
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
+        frame.setVisible(true);
+
         panel.getScreen().getScreenFields().getCurrentField().getString();
         panel.getScreen().getScreenFields().getField(0).setString("VIVEKMANO");
         ScreenField f = panel.getScreen().getScreenFields().getField(0);
         System.out.println(f.getString());
-        panel.getScreen().getScreenFields().getField(1).setString("Mypub400@270592");
+        panel.getScreen().getScreenFields().getField(1).setString("Sqpub400@2705");
         Thread.sleep(2000);
         panel.getScreen().sendKeys(KeyMnemonic.ENTER);
         panel.getScreen().updateScreen();
